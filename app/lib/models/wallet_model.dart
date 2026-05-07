@@ -1,7 +1,9 @@
-class WalletModel {
+import 'package:equatable/equatable.dart';
+
+class WalletModel extends Equatable {
   final String id;
   final String userId;
-  final String currency; // YER, USD, SAR
+  final String currency;
   final double balance;
   final String walletNumber;
   final bool isDefault;
@@ -14,6 +16,9 @@ class WalletModel {
     required this.walletNumber,
     this.isDefault = false,
   });
+
+  @override
+  List<Object?> get props => [id, userId, currency, balance, walletNumber, isDefault];
 
   factory WalletModel.fromJson(Map<String, dynamic> json) {
     return WalletModel(
@@ -41,7 +46,6 @@ class WalletModel {
 
   String get currencyName => getCurrencyNameAr(currency);
 
-  /// Static helper to get currency symbol by currency code.
   static String getCurrencySymbol(String currency) {
     switch (currency) {
       case 'YER':
@@ -55,7 +59,6 @@ class WalletModel {
     }
   }
 
-  /// Static helper to get Arabic currency name by currency code.
   static String getCurrencyNameAr(String currency) {
     switch (currency) {
       case 'YER':

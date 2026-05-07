@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:equatable/equatable.dart';
 
-class TransactionModel {
+class TransactionModel extends Equatable {
   final String id;
   final String type; // PAYMENT, TRANSFER, CASH_OUT, CASH_IN, REFUND, RECHARGE, BILL_PAYMENT
   final String status; // PENDING, COMPLETED, FAILED, EXPIRED, REVERSED, CANCELLED
@@ -98,21 +99,23 @@ class TransactionModel {
 
   /// Whether this transaction is outgoing from the current user's perspective.
   /// For simplicity, we consider PAYMENT, CASH_OUT, and TRANSFER with senderWalletId as outgoing.
+  @override
+  List<Object?> get props => [
+        id, type, status, senderWalletId, receiverWalletId,
+        amount, fee, netAmount, currency, referenceNo,
+        transactionRef, description, notes, isIdentityHidden,
+        createdAt, senderName, receiverName, senderPhone, receiverPhone,
+      ];
+
   bool get isOutgoing =>
       type == 'PAYMENT' ||
       type == 'CASH_OUT' ||
-      (type == 'TRANSFER' && senderWalletId != null && receiverWalletId == null) ||
       (type == 'TRANSFER' && senderWalletId != null);
 
   bool get isIncome =>
       type == 'CASH_IN' ||
       type == 'RECHARGE' ||
-      (type == 'TRANSFER' && receiverWalletId != null && senderWalletId == null);
-
-  bool get isExpense =>
-      type == 'PAYMENT' ||
-      type == 'CASH_OUT' ||
-      (type == 'TRANSFER' && senderWalletId != null);
+      (type == 'REFUND');
 
   String get typeAr {
     switch (type) {

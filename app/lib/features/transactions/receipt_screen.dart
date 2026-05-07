@@ -1,22 +1,135 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/utils/date_formatter.dart';
 import '../../models/receipt_model.dart';
 import '../../models/transaction_party_model.dart';
+import '../../repositories/transaction_repository.dart';
 import '../../widgets/receipt_card.dart';
-import 'package:flutter/services.dart';
 
-class ReceiptScreen extends StatelessWidget {
+class ReceiptScreen extends StatefulWidget {
   final String? transactionId;
   final Map<String, dynamic>? transactionData;
 
   const ReceiptScreen({super.key, this.transactionId, this.transactionData});
 
   @override
+  State<ReceiptScreen> createState() => _ReceiptScreenState();
+}
+
+class _ReceiptScreenState extends State<ReceiptScreen> {
+  ReceiptModel? _receipt;
+  bool _isLoading = false;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.transactionData != null) {
+      _receipt = _buildReceiptFromData(widget.transactionData!);
+    } else if (widget.transactionId != null) {
+      _fetchReceipt();
+    }
+  }
+
+  Future<void> _fetchReceipt() async {
+    if (widget.transactionId == null) return;
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final repo = TransactionRepository();
+      final result = await repo.getReceipt(transactionId: widget.transactionId!);
+      final receiptData = result['receipt'] ?? result;
+      setState(() {
+        _receipt = _buildReceiptFromData(receiptData is Map<String, dynamic> ? receiptData : <String, dynamic>{});
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString().replaceAll('Exception: ', '');
+        _isLoading = false;
+      });
+    }
+  }
+
+  ReceiptModel _buildReceiptFromData(Map<String, dynamic> data) {
+    final txn = data['transaction'] ?? data['data'] ?? data;
+    return ReceiptModel(
+      referenceNo: txn['referenceNo']?.toString() ?? '',
+      type: txn['type']?.toString() ?? '',
+      status: txn['status']?.toString() ?? 'COMPLETED',
+      amount: (txn['amount'] as num?)?.toDouble() ?? 0,
+      fee: (txn['fee'] as num?)?.toDouble() ?? 0,
+      netAmount: txn['netAmount'] != null ? (txn['netAmount'] as num).toDouble() : null,
+      currency: txn['currency']?.toString() ?? 'YER',
+      description: txn['description']?.toString(),
+      notes: txn['notes']?.toString(),
+      posNumber: txn['posNumber']?.toString(),
+      date: txn['createdAt'] != null ? DateTime.tryParse(txn['createdAt'].toString()) ?? DateTime.now() : DateTime.now(),
+      sender: txn['sender'] != null
+          ? TransactionParty(
+              name: txn['sender']['name']?.toString(),
+              phone: txn['sender']['phone']?.toString(),
+            )
+          : (txn['senderName'] != null
+              ? TransactionParty(name: txn['senderName']?.toString(), phone: txn['senderPhone']?.toString())
+              : null),
+      receiver: txn['receiver'] != null
+          ? TransactionParty(
+              name: txn['receiver']['name']?.toString(),
+              phone: txn['receiver']['phone']?.toString(),
+            )
+          : (txn['receiverName'] != null
+              ? TransactionParty(name: txn['receiverName']?.toString(), phone: txn['receiverPhone']?.toString())
+              : null),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final receipt = _buildReceipt();
+    if (_isLoading) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('إيصال العملية')),
+        body: const Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    if (_error != null) {
+      return Scaffold(
+        appBar: AppBar(title: const Text('إيصال العملية')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, color: AppColors.error, size: 48),
+              const SizedBox(height: 16),
+              Text(_error!, style: AppTextStyles.bodyMedium),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _fetchReceipt,
+                child: const Text('إعادة المحاولة'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final receipt = _receipt ?? ReceiptModel(
+      referenceNo: '',
+      type: '',
+      status: 'PENDING',
+      amount: 0,
+      fee: 0,
+      currency: 'YER',
+      date: DateTime.now(),
+    );
 
     return Scaffold(
       appBar: AppBar(title: const Text('إيصال العملية')),
@@ -25,7 +138,6 @@ class ReceiptScreen extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 16),
-            // Success animation - green checkmark icon
             Container(
               width: 64,
               height: 64,
@@ -84,50 +196,6 @@ class ReceiptScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  ReceiptModel _buildReceipt() {
-    if (transactionData != null) {
-      final txn = transactionData!['transaction'] ?? transactionData!['data'] ?? transactionData!;
-      return ReceiptModel(
-        referenceNo: txn['referenceNo']?.toString() ?? '',
-        type: txn['type']?.toString() ?? '',
-        status: txn['status']?.toString() ?? 'COMPLETED',
-        amount: (txn['amount'] as num?)?.toDouble() ?? 0,
-        fee: (txn['fee'] as num?)?.toDouble() ?? 0,
-        netAmount: txn['netAmount'] != null ? (txn['netAmount'] as num).toDouble() : null,
-        currency: txn['currency']?.toString() ?? 'YER',
-        description: txn['description']?.toString(),
-        notes: txn['notes']?.toString(),
-        posNumber: txn['posNumber']?.toString(),
-        date: txn['createdAt'] != null ? DateTime.tryParse(txn['createdAt'].toString()) ?? DateTime.now() : DateTime.now(),
-        sender: txn['sender'] != null
-            ? TransactionParty(
-                name: txn['sender']['name']?.toString(),
-                phone: txn['sender']['phone']?.toString(),
-              )
-            : (txn['senderName'] != null
-                ? TransactionParty(name: txn['senderName']?.toString(), phone: txn['senderPhone']?.toString())
-                : null),
-        receiver: txn['receiver'] != null
-            ? TransactionParty(
-                name: txn['receiver']['name']?.toString(),
-                phone: txn['receiver']['phone']?.toString(),
-              )
-            : (txn['receiverName'] != null
-                ? TransactionParty(name: txn['receiverName']?.toString(), phone: txn['receiverPhone']?.toString())
-                : null),
-      );
-    }
-    return ReceiptModel(
-      referenceNo: '',
-      type: '',
-      status: 'PENDING',
-      amount: 0,
-      fee: 0,
-      currency: 'YER',
-      date: DateTime.now(),
     );
   }
 }

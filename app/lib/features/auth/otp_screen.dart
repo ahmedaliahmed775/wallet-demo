@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../blocs/auth/auth_bloc.dart';
-import '../../blocs/auth/auth_bloc.dart';
 import '../../widgets/otp_input.dart';
 import '../../widgets/loading_overlay.dart';
 

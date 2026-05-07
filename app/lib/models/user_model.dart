@@ -1,14 +1,15 @@
+import 'package:equatable/equatable.dart';
 import 'wallet_model.dart';
 import 'merchant_model.dart';
 
-class UserModel {
+class UserModel extends Equatable {
   final String id;
   final String phone;
   final String name;
   final String? email;
-  final String role; // CUSTOMER, MERCHANT, POS, AGENT
-  final String status; // ACTIVE, INACTIVE, SUSPENDED, FROZEN
-  final String? gender; // MALE, FEMALE
+  final String role;
+  final String status;
+  final String? gender;
   final String? firstName;
   final String? fatherName;
   final String? grandfatherName;
@@ -19,7 +20,6 @@ class UserModel {
   final bool isIdentityHidden;
   final String language;
   final DateTime createdAt;
-  // wallet info embedded for login response
   final List<WalletModel>? wallets;
   final MerchantModel? merchant;
 
@@ -44,6 +44,14 @@ class UserModel {
     this.wallets,
     this.merchant,
   });
+
+  @override
+  List<Object?> get props => [
+        id, phone, name, email, role, status, gender,
+        firstName, fatherName, grandfatherName, familyName, nationalId,
+        confirmationCode, isVerified, isIdentityHidden, language,
+        createdAt, wallets, merchant,
+      ];
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(

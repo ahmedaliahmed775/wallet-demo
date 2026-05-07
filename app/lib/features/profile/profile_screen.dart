@@ -5,7 +5,6 @@ import '../../core/theme/app_text_styles.dart';
 import '../../core/utils/currency_formatter.dart';
 import '../../core/storage/secure_storage.dart';
 import '../../blocs/auth/auth_bloc.dart';
-import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/wallet/wallet_bloc.dart';
 import '../../blocs/wallet/wallet_state.dart';
 import '../../models/wallet_model.dart';

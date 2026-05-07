@@ -28,6 +28,10 @@ class _OtpInputState extends State<OtpInput> {
     super.initState();
     _focusNodes = List.generate(widget.length, (_) => FocusNode());
     _controllers = List.generate(widget.length, (_) => TextEditingController());
+    // Add focus listeners so the UI updates on focus change
+    for (final node in _focusNodes) {
+      node.addListener(() => setState(() {}));
+    }
   }
 
   @override
