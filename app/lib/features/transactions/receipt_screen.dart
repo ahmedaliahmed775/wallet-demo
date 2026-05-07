@@ -44,7 +44,7 @@ class _ReceiptScreenState extends State<ReceiptScreen> {
 
     try {
       final repo = TransactionRepository();
-      final result = await repo.getReceipt(transactionId: widget.transactionId!);
+      final result = await repo.getTransactionReceipt(transactionId: widget.transactionId!);
       final receiptData = result['receipt'] ?? result;
       setState(() {
         _receipt = _buildReceiptFromData(receiptData is Map<String, dynamic> ? receiptData : <String, dynamic>{});

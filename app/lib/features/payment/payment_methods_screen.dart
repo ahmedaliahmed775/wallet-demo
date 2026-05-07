@@ -71,7 +71,7 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
                 onChanged: (v) => setState(() => _hideIdentity = v),
                 title: const Text('🔒 إخفاء اسمي ورقمي عند الدفع', style: AppTextStyles.titleMedium),
                 subtitle: const Text('لن يرى المستلم اسمك ورقمك', style: AppTextStyles.bodySmall),
-                activeColor: AppColors.primary,
+                activeThumbColor: AppColors.primary,
                 contentPadding: EdgeInsets.zero,
               ),
             ),

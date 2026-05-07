@@ -177,7 +177,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ) async {
     emit(AuthLoading());
     try {
-      final result = await _authRepository.register(data: {
+      final _ = await _authRepository.register(data: {
         'name': event.name,
         'phone': event.phone,
         'password': event.password,

@@ -12,7 +12,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _darkMode = false;
   bool _notifications = true;
-  String _language = 'ar';
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +31,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('الوضع الداكن', style: AppTextStyles.bodyMedium),
                   value: _darkMode,
                   onChanged: (v) => setState(() => _darkMode = v),
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                 ),
                 const Divider(height: 1, indent: 16),
                 SwitchListTile(
                   title: const Text('الإشعارات', style: AppTextStyles.bodyMedium),
                   value: _notifications,
                   onChanged: (v) => setState(() => _notifications = v),
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                 ),
                 const Divider(height: 1, indent: 16),
                 ListTile(

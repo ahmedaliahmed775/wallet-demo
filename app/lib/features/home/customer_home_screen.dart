@@ -17,7 +17,6 @@ import '../transfer/between_accounts_screen.dart';
 import '../payment/payment_methods_screen.dart';
 import '../recharge/recharge_screen.dart';
 import '../bills/bills_screen.dart';
-import '../cash/deposit_screen.dart';
 import '../cash/withdraw_screen.dart';
 import '../transactions/history_screen.dart';
 import '../profile/profile_screen.dart';

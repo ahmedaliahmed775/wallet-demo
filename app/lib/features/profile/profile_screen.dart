@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 import '../../core/utils/currency_formatter.dart';
-import '../../core/storage/secure_storage.dart';
 import '../../blocs/auth/auth_bloc.dart';
 import '../../blocs/wallet/wallet_bloc.dart';
 import '../../blocs/wallet/wallet_state.dart';
 import '../../models/wallet_model.dart';
 import '../../repositories/auth_repository.dart';
 import '../role_selection/role_selection_screen.dart';
-import 'settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -189,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       }, trailing: Switch(
                         value: _hideIdentity,
                         onChanged: (v) => setState(() => _hideIdentity = v),
-                        activeColor: AppColors.primary,
+                        activeThumbColor: AppColors.primary,
                       )),
                       _MenuItem(Icons.language, '🌐 اللغة', () {}),
                       _MenuItem(Icons.notifications, '🔔 الإشعارات', () {}),

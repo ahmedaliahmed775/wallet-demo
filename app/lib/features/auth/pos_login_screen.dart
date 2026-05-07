@@ -8,7 +8,6 @@ import '../../widgets/app_button.dart';
 import '../../widgets/app_text_field.dart';
 import '../../widgets/loading_overlay.dart';
 import '../home/merchant_home_screen.dart';
-import 'otp_screen.dart';
 
 class PosLoginScreen extends StatefulWidget {
   const PosLoginScreen({super.key});

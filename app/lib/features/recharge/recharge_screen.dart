@@ -36,13 +36,9 @@ class _RechargeScreenState extends State<RechargeScreen> {
       final repo = RechargeRepository();
       final result = await repo.getOperators();
       setState(() {
-        if (result is List) {
-          _operators = result
-              .map((o) => RechargeOperatorModel.fromJson(o as Map<String, dynamic>))
-              .toList();
-        } else {
-          _operators = [];
-        }
+        _operators = result
+            .map((o) => RechargeOperatorModel.fromJson(o as Map<String, dynamic>))
+            .toList();
         if (_operators.isEmpty) {
           // Use default operators for demo
           _operators = [

@@ -5,7 +5,6 @@ import '../../core/theme/app_text_styles.dart';
 import '../../blocs/transaction/transaction_bloc.dart';
 import '../../blocs/transaction/transaction_event.dart';
 import '../../blocs/transaction/transaction_state.dart';
-import '../../repositories/transaction_repository.dart';
 import '../../widgets/transaction_item.dart';
 import 'receipt_screen.dart';
 

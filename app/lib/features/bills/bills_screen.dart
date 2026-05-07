@@ -27,13 +27,9 @@ class _BillsScreenState extends State<BillsScreen> {
       final repo = BillsRepository();
       final result = await repo.getBillServices();
       setState(() {
-        if (result is List) {
-          _services = result
-              .map((s) => BillServiceModel.fromJson(s as Map<String, dynamic>))
-              .toList();
-        } else {
-          _services = [];
-        }
+        _services = result
+            .map((s) => BillServiceModel.fromJson(s as Map<String, dynamic>))
+            .toList();
         if (_services.isEmpty) {
           _services = [
             const BillServiceModel(id: '1', nameAr: 'إنترنت', nameEn: 'Internet', serviceCode: 'INTERNET', category: 'اتصالات'),
