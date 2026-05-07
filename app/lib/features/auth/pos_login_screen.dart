@@ -123,8 +123,7 @@ class _PosLoginScreenState extends State<PosLoginScreen> {
                       keyboardType: TextInputType.phone,
                       prefix: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: const Center(
-                          widthFactor: 0,
+                        child: Center(
                           child: Text(
                             '+967',
                             style: TextStyle(

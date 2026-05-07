@@ -134,7 +134,7 @@ class ReceiptCard extends StatelessWidget {
               style: AppTextStyles.bodyMedium.copyWith(
                 fontWeight: FontWeight.w600,
               ),
-              textAlign: TextAlign.left,
+              textAlign: TextAlign.start,
             ),
           ),
         ],

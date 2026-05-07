@@ -67,11 +67,13 @@ class AppTextField extends StatelessWidget {
           style: AppTextStyles.bodyLarge.copyWith(
             color: AppColors.textPrimary,
           ),
-          textAlign: TextAlign.right,
+          textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: AppTextStyles.bodyLarge.copyWith(
+            hintStyle: TextStyle(
               color: AppColors.textHint,
+              fontSize: 14,
+              fontFamily: 'NotoSansArabic',
             ),
             counterText: '',
             filled: true,

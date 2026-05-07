@@ -61,7 +61,7 @@ class _OtpScreenState extends State<OtpScreen> {
     if (_canResend) {
       context.read<AuthBloc>().add(AuthOtpRequested(
             phone: widget.phone,
-            shortCode: '',
+            shortCode: '1234',
             purpose: widget.purpose,
           ));
       _startTimer();
@@ -88,11 +88,7 @@ class _OtpScreenState extends State<OtpScreen> {
       ),
       body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is AuthOtpVerified) {
-            if (widget.onVerified != null) {
-              widget.onVerified!();
-            }
-          } else if (state is AuthAuthenticated) {
+          if (state is AuthOtpVerified || state is AuthAuthenticated) {
             widget.onVerified?.call();
           } else if (state is AuthError) {
             ScaffoldMessenger.of(context).showSnackBar(

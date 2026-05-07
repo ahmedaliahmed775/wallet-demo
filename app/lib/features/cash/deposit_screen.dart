@@ -117,8 +117,7 @@ class _DepositScreenState extends State<DepositScreen> {
                 keyboardType: TextInputType.phone,
                 prefix: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: const Center(
-                    widthFactor: 0,
+                  child: Center(
                     child: Text('+967', style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.w600)),
                   ),
                 ),

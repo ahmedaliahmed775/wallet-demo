@@ -26,7 +26,7 @@ class AuthRepository {
       if (result['user'] != null) {
         final user = result['user'] as Map<String, dynamic>;
         if (user['id'] != null) {
-          await SecureStorage.saveUserId(user['id'] as String);
+          await SecureStorage.saveUserId(user['id'].toString());
         }
         if (user['role'] != null) {
           await SecureStorage.saveUserRole(user['role'] as String);
