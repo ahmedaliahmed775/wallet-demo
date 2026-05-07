@@ -1,0 +1,5 @@
+package com.mahfaz.mahfaz
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()

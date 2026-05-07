@@ -1,0 +1,162 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String   @id @default(uuid())
+  phone            String   @unique
+  password         String
+  name             String
+  role             String   @default("CUSTOMER") // CUSTOMER, MERCHANT, POS, AGENT
+  status           String   @default("ACTIVE") // ACTIVE, INACTIVE, SUSPENDED, FROZEN
+  gender           String?  // MALE, FEMALE
+  firstName        String?
+  fatherName       String?
+  grandfatherName  String?
+  familyName       String?
+  nationalId       String?
+  confirmationCode String   @default("1234")
+  isVerified       Boolean  @default(false)
+  isIdentityHidden Boolean  @default(false)
+  language         String   @default("ar") // ar, en
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  wallets       Wallet[]
+  notifications Notification[]
+  sessions      Session[]
+  merchant      Merchant?
+
+  @@index([phone])
+}
+
+model Wallet {
+  id           String   @id @default(uuid())
+  userId       String
+  currency     String   // YER, USD, SAR
+  balance      Float    @default(0)
+  walletNumber String   @unique
+  isDefault    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  user          User     @relation(fields: [userId], references: [id])
+  sentTxns      Transaction[]  @relation("SenderWallet")
+  receivedTxns  Transaction[]  @relation("ReceiverWallet")
+
+  @@index([walletNumber])
+}
+
+model Transaction {
+  id              String    @id @default(uuid())
+  type            String    // PAYMENT, TRANSFER, CASH_OUT, CASH_IN, REFUND, RECHARGE, BILL_PAYMENT
+  status          String    @default("PENDING") // PENDING, COMPLETED, FAILED, EXPIRED, REVERSED, CANCELLED
+  senderWalletId  String?
+  receiverWalletId String?
+  amount          Float
+  fee             Float     @default(0)
+  netAmount       Float?
+  currency        String
+  referenceNo     String    @unique
+  transactionRef  String?
+  otpCode         String?
+  otpExpiresAt    DateTime?
+  description     String?
+  notes           String?
+  posNumber       String?
+  qrCodeData      String?
+  isIdentityHidden Boolean  @default(false)
+  metadata        String?   // JSON string
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  senderWallet   Wallet?   @relation("SenderWallet", fields: [senderWalletId], references: [id])
+  receiverWallet Wallet?   @relation("ReceiverWallet", fields: [receiverWalletId], references: [id])
+
+  @@index([referenceNo])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OTPVerification {
+  id        String   @id @default(uuid())
+  phone     String
+  code      String
+  purpose   String   // LOGIN, PAYMENT, TRANSFER, CHANGE_PIN, VERIFY, REGISTER
+  isUsed    Boolean  @default(false)
+  expiresAt DateTime
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Service {
+  id         String  @id @default(uuid())
+  nameAr     String
+  nameEn     String
+  icon       String?
+  category   String  // PAYMENT, TRANSFER, BILLS, RECHARGE, CASH
+  isActive   Boolean @default(true)
+  sortOrder  Int     @default(0)
+}
+
+model Merchant {
+  id             String    @id @default(uuid())
+  userId         String    @unique
+  businessName   String
+  shortCode      String    @unique
+  terminalNumber String?
+  category       String?
+  isActive       Boolean   @default(true)
+  approvedAt     DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  titleAr   String
+  titleEn   String
+  messageAr String
+  messageEn String
+  type      String   // TRANSACTION, SYSTEM, PROMO
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([createdAt])
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  userId     String
+  token      String
+  deviceInfo String?
+  ipAddress  String?
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model BillService {
+  id          String  @id @default(uuid())
+  nameAr      String
+  nameEn      String
+  category    String?
+  serviceCode String  @unique
+  isActive    Boolean @default(true)
+}
+
+model RechargeOperator {
+  id       String  @id @default(uuid())
+  nameAr   String
+  nameEn   String
+  category String  // PREPAID, POSTPAID, BUNDLE
+  isActive Boolean @default(true)
+}
