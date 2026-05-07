@@ -1,5 +1,22 @@
 class ApiEndpoints {
-  static const String baseUrl = 'http://10.0.2.2:3001';
+  // ============================================
+  // تغيير baseUrl حسب البيئة:
+  // ============================================
+  //
+  // 1) محاكي Android (emulator):
+  //    static const String baseUrl = 'http://10.0.2.2:3001';
+  //
+  // 2) جهاز حقيقي على نفس شبكة WiFi:
+  //    static const String baseUrl = 'http://192.168.X.X:3001';
+  //    (استبدل X.X بـ IP جهازك)
+  //
+  // 3) إنتاج (Render.com):
+  //    static const String baseUrl = 'https://mahfaz-server.onrender.com';
+  //
+  // ============================================
+
+  // ← غيّر هذا السطر فقط:
+  static const String baseUrl = 'https://mahfaz-server.onrender.com';
 
   // Auth
   static const String login = '/api/auth/login';
