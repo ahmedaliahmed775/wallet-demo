@@ -30,6 +30,9 @@ jobs:
           channel: 'stable'
           cache: true
 
+      - name: Disable analytics
+        run: flutter config --no-analytics
+
       - name: Install dependencies
         working-directory: app
         run: flutter pub get
