@@ -187,7 +187,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       }, trailing: Switch(
                         value: _hideIdentity,
                         onChanged: (v) => setState(() => _hideIdentity = v),
-                        activeThumbColor: AppColors.primary,
+                        activeColor: AppColors.primary,
                       )),
                       _MenuItem(Icons.language, '🌐 اللغة', () {}),
                       _MenuItem(Icons.notifications, '🔔 الإشعارات', () {}),

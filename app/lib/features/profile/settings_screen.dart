@@ -31,14 +31,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: const Text('الوضع الداكن', style: AppTextStyles.bodyMedium),
                   value: _darkMode,
                   onChanged: (v) => setState(() => _darkMode = v),
-                  activeThumbColor: AppColors.primary,
+                  activeColor: AppColors.primary,
                 ),
                 const Divider(height: 1, indent: 16),
                 SwitchListTile(
                   title: const Text('الإشعارات', style: AppTextStyles.bodyMedium),
                   value: _notifications,
                   onChanged: (v) => setState(() => _notifications = v),
-                  activeThumbColor: AppColors.primary,
+                  activeColor: AppColors.primary,
                 ),
                 const Divider(height: 1, indent: 16),
                 ListTile(
