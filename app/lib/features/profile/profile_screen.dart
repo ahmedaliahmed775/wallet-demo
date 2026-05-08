@@ -8,6 +8,7 @@ import '../../blocs/wallet/wallet_bloc.dart';
 import '../../blocs/wallet/wallet_state.dart';
 import '../../models/wallet_model.dart';
 import '../../repositories/auth_repository.dart';
+import '../../widgets/app_text_field.dart';
 import '../role_selection/role_selection_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -251,16 +252,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextFormField(
+              AppTextField(
+                label: 'كلمة المرور الحالية',
                 controller: oldCtrl,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: 'كلمة المرور الحالية'),
+                validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
               ),
               const SizedBox(height: 12),
-              TextFormField(
+              AppTextField(
+                label: 'كلمة المرور الجديدة',
                 controller: newCtrl,
                 obscureText: true,
-                decoration: const InputDecoration(labelText: 'كلمة المرور الجديدة'),
+                validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
               ),
             ],
           ),
@@ -312,18 +315,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextFormField(
+              AppTextField(
+                label: 'الكود الحالي',
                 controller: oldCtrl,
                 keyboardType: TextInputType.number,
                 maxLength: 4,
-                decoration: const InputDecoration(labelText: 'الكود الحالي'),
+                isNumberField: true,
+                validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
               ),
               const SizedBox(height: 12),
-              TextFormField(
+              AppTextField(
+                label: 'الكود الجديد',
                 controller: newCtrl,
                 keyboardType: TextInputType.number,
                 maxLength: 4,
-                decoration: const InputDecoration(labelText: 'الكود الجديد'),
+                isNumberField: true,
+                validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
               ),
             ],
           ),

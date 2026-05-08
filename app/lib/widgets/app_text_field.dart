@@ -18,6 +18,7 @@ class AppTextField extends StatelessWidget {
   final void Function(String)? onSubmitted;
   final TextInputAction? textInputAction;
   final FocusNode? focusNode;
+  final bool isNumberField;
 
   const AppTextField({
     super.key,
@@ -36,10 +37,17 @@ class AppTextField extends StatelessWidget {
     this.onSubmitted,
     this.textInputAction,
     this.focusNode,
+    this.isNumberField = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Determine if this is a number-type field
+    final bool isNumeric = isNumberField ||
+        keyboardType == TextInputType.number ||
+        keyboardType == TextInputType.phone ||
+        keyboardType == TextInputType.numberWithOptions();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -67,6 +75,9 @@ class AppTextField extends StatelessWidget {
           style: AppTextStyles.bodyLarge.copyWith(
             color: AppColors.textPrimary,
           ),
+          // Numbers and phone should always be LTR
+          textDirection: isNumeric ? TextDirection.ltr : null,
+          textAlign: isNumeric ? TextAlign.right : TextAlign.right,
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(
             hintText: hint,
@@ -78,28 +89,37 @@ class AppTextField extends StatelessWidget {
             counterText: '',
             filled: true,
             fillColor: enabled ? AppColors.surface : AppColors.background,
-            prefixIcon: prefix,
+            // Wrap prefix in a SizedBox with fixed width to prevent layout issues
+            prefixIcon: prefix != null
+                ? SizedBox(
+                    width: 60,
+                    child: prefix,
+                  )
+                : null,
+            prefixIconConstraints: prefix != null
+                ? const BoxConstraints(minWidth: 60, minHeight: 48)
+                : null,
             suffixIcon: suffix,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.divider, width: 1.5),
+              borderSide: const BorderSide(color: AppColors.divider, width: 1.5),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.divider, width: 1.5),
+              borderSide: const BorderSide(color: AppColors.divider, width: 1.5),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.primary, width: 2),
+              borderSide: const BorderSide(color: AppColors.primary, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.error, width: 1.5),
+              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.error, width: 2),
+              borderSide: const BorderSide(color: AppColors.error, width: 2),
             ),
           ),
         ),

@@ -121,15 +121,14 @@ class _PosLoginScreenState extends State<PosLoginScreen> {
                         return null;
                       },
                       keyboardType: TextInputType.phone,
-                      prefix: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: Center(
-                          child: Text(
-                            '+967',
-                            style: TextStyle(
-                              color: AppColors.textSecondary,
-                              fontWeight: FontWeight.w600,
-                            ),
+                      prefix: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          '+967',
+                          style: TextStyle(
+                            color: AppColors.textSecondary,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'NotoSansArabic',
                           ),
                         ),
                       ),

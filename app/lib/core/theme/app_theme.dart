@@ -22,6 +22,7 @@ class AppTheme {
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white,
+            fontFamily: 'NotoSansArabic',
           ),
         ),
         cardTheme: CardThemeData(
@@ -42,6 +43,7 @@ class AppTheme {
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
+              fontFamily: 'NotoSansArabic',
             ),
           ),
         ),
@@ -56,6 +58,7 @@ class AppTheme {
             textStyle: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
+              fontFamily: 'NotoSansArabic',
             ),
           ),
         ),
@@ -65,6 +68,7 @@ class AppTheme {
           hintStyle: const TextStyle(
             color: AppColors.textHint,
             fontSize: 14,
+            fontFamily: 'NotoSansArabic',
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -100,17 +104,17 @@ class AppTheme {
           foregroundColor: Colors.white,
         ),
         textTheme: const TextTheme(
-          headlineLarge: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-          headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-          headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
-          titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
-          titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
-          titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
-          bodyLarge: TextStyle(fontSize: 16, color: AppColors.textPrimary),
-          bodyMedium: TextStyle(fontSize: 14, color: AppColors.textPrimary),
-          bodySmall: TextStyle(fontSize: 12, color: AppColors.textSecondary),
-          labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.primary),
-          labelMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.textSecondary),
+          headlineLarge: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: AppColors.textPrimary, fontFamily: 'NotoSansArabic'),
+          headlineMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.textPrimary, fontFamily: 'NotoSansArabic'),
+          headlineSmall: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textPrimary, fontFamily: 'NotoSansArabic'),
+          titleLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textPrimary, fontFamily: 'NotoSansArabic'),
+          titleMedium: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary, fontFamily: 'NotoSansArabic'),
+          titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textPrimary, fontFamily: 'NotoSansArabic'),
+          bodyLarge: TextStyle(fontSize: 16, color: AppColors.textPrimary, fontFamily: 'NotoSansArabic'),
+          bodyMedium: TextStyle(fontSize: 14, color: AppColors.textPrimary, fontFamily: 'NotoSansArabic'),
+          bodySmall: TextStyle(fontSize: 12, color: AppColors.textSecondary, fontFamily: 'NotoSansArabic'),
+          labelLarge: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.primary, fontFamily: 'NotoSansArabic'),
+          labelMedium: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.textSecondary, fontFamily: 'NotoSansArabic'),
         ),
       );
 }

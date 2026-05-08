@@ -37,6 +37,7 @@ class _OtpInputState extends State<OtpInput> {
   @override
   void dispose() {
     for (final node in _focusNodes) {
+      node.removeListener(() => setState(() {}));
       node.dispose();
     }
     for (final ctrl in _controllers) {
@@ -75,6 +76,7 @@ class _OtpInputState extends State<OtpInput> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: List.generate(widget.length, (index) {
+          final hasFocus = _focusNodes[index].hasFocus;
           return Container(
             width: 56,
             height: 56,
@@ -84,6 +86,7 @@ class _OtpInputState extends State<OtpInput> {
               focusNode: _focusNodes[index],
               keyboardType: TextInputType.number,
               textAlign: TextAlign.center,
+              textDirection: TextDirection.ltr,
               maxLength: 1,
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
@@ -91,19 +94,20 @@ class _OtpInputState extends State<OtpInput> {
               style: AppTextStyles.displayMedium.copyWith(
                 color: AppColors.textPrimary,
               ),
+              cursorColor: AppColors.primary,
               decoration: InputDecoration(
                 counterText: '',
                 filled: true,
-                fillColor: _focusNodes[index].hasFocus
+                fillColor: hasFocus
                     ? AppColors.surface
                     : AppColors.background,
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide(
-                    color: _focusNodes[index].hasFocus
+                    color: hasFocus
                         ? AppColors.primary
                         : AppColors.divider,
-                    width: _focusNodes[index].hasFocus ? 2 : 1,
+                    width: hasFocus ? 2 : 1.5,
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -115,7 +119,7 @@ class _OtpInputState extends State<OtpInput> {
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.divider),
+                  borderSide: const BorderSide(color: AppColors.divider, width: 1.5),
                 ),
               ),
               onChanged: (value) => _onChanged(value, index),

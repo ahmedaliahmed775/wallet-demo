@@ -12,6 +12,7 @@ import '../../blocs/transaction/transaction_state.dart';
 import '../../widgets/balance_card.dart';
 import '../../widgets/service_grid.dart';
 import '../../widgets/transaction_item.dart';
+import '../../widgets/app_text_field.dart';
 import '../transfer/transfer_screen.dart';
 import '../transfer/between_accounts_screen.dart';
 import '../payment/payment_methods_screen.dart';
@@ -311,33 +312,33 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextFormField(
+                AppTextField(
+                  label: 'رقم الهوية',
                   controller: nationalIdCtrl,
-                  decoration: const InputDecoration(labelText: 'رقم الهوية'),
                   validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
+                AppTextField(
+                  label: 'الاسم',
                   controller: firstNameCtrl,
-                  decoration: const InputDecoration(labelText: 'الاسم'),
                   validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
+                AppTextField(
+                  label: 'اسم الأب',
                   controller: fatherNameCtrl,
-                  decoration: const InputDecoration(labelText: 'اسم الأب'),
                   validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
+                AppTextField(
+                  label: 'اسم الجد',
                   controller: grandfatherNameCtrl,
-                  decoration: const InputDecoration(labelText: 'اسم الجد'),
                   validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
                 ),
                 const SizedBox(height: 12),
-                TextFormField(
+                AppTextField(
+                  label: 'اسم العائلة',
                   controller: familyNameCtrl,
-                  decoration: const InputDecoration(labelText: 'اسم العائلة'),
                   validator: (v) => v == null || v.isEmpty ? 'مطلوب' : null,
                 ),
               ],
