@@ -110,17 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return null;
                       },
                       keyboardType: TextInputType.phone,
-                      prefix: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text(
-                          '+967',
-                          style: TextStyle(
-                            color: AppColors.textSecondary,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'NotoSansArabic',
-                          ),
-                        ),
-                      ),
+                      prefix: const Icon(Icons.phone_android, color: AppColors.textSecondary, size: 22),
                     ),
                     const SizedBox(height: 20),
                     AppTextField(
@@ -129,7 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       controller: _passwordController,
                       validator: Validators.validatePassword,
                       obscureText: _obscurePassword,
-                      isNumberField: false,
                       suffix: IconButton(
                         icon: Icon(
                           _obscurePassword ? Icons.visibility_off : Icons.visibility,

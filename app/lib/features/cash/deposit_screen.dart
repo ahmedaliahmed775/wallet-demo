@@ -115,10 +115,7 @@ class _DepositScreenState extends State<DepositScreen> {
                 hint: '7XX XXX XXX',
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
-                prefix: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Text('+967', style: TextStyle(color: AppColors.textSecondary, fontWeight: FontWeight.w600, fontFamily: 'NotoSansArabic')),
-                ),
+                prefix: const Icon(Icons.phone_android, color: AppColors.textSecondary, size: 22),
               ),
               const SizedBox(height: 20),
               AppTextField(

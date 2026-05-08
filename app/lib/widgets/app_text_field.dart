@@ -54,72 +54,75 @@ class AppTextField extends StatelessWidget {
         if (label != null) ...[
           Text(
             label!,
-            style: AppTextStyles.labelLarge.copyWith(
+            style: const TextStyle(
               color: AppColors.textPrimary,
-            ),
-          ),
-          const SizedBox(height: 8),
-        ],
-        TextFormField(
-          controller: controller,
-          validator: validator,
-          keyboardType: keyboardType,
-          obscureText: obscureText,
-          maxLines: maxLines,
-          maxLength: maxLength,
-          enabled: enabled,
-          onChanged: onChanged,
-          onFieldSubmitted: onSubmitted,
-          textInputAction: textInputAction,
-          focusNode: focusNode,
-          style: AppTextStyles.bodyLarge.copyWith(
-            color: AppColors.textPrimary,
-          ),
-          // Numbers and phone should always be LTR
-          textDirection: isNumeric ? TextDirection.ltr : null,
-          textAlign: isNumeric ? TextAlign.right : TextAlign.right,
-          textAlignVertical: TextAlignVertical.center,
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(
-              color: AppColors.textHint,
               fontSize: 14,
+              fontWeight: FontWeight.w600,
               fontFamily: 'NotoSansArabic',
             ),
-            counterText: '',
-            filled: true,
-            fillColor: enabled ? AppColors.surface : AppColors.background,
-            // Wrap prefix in a SizedBox with fixed width to prevent layout issues
-            prefixIcon: prefix != null
-                ? SizedBox(
-                    width: 60,
-                    child: prefix,
-                  )
-                : null,
-            prefixIconConstraints: prefix != null
-                ? const BoxConstraints(minWidth: 60, minHeight: 48)
-                : null,
-            suffixIcon: suffix,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.divider, width: 1.5),
+          ),
+          const SizedBox(height: 6),
+        ],
+        // Wrap number fields in LTR directionality to fix RTL issues
+        Directionality(
+          textDirection: isNumeric ? TextDirection.ltr : TextDirection.rtl,
+          child: TextFormField(
+            controller: controller,
+            validator: validator,
+            keyboardType: keyboardType,
+            obscureText: obscureText,
+            maxLines: maxLines,
+            maxLength: maxLength,
+            enabled: enabled,
+            onChanged: onChanged,
+            onFieldSubmitted: onSubmitted,
+            textInputAction: textInputAction,
+            focusNode: focusNode,
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'NotoSansArabic',
             ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.divider, width: 1.5),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.error, width: 2),
+            textAlign: isNumeric ? TextAlign.left : TextAlign.right,
+            textAlignVertical: TextAlignVertical.center,
+            cursorColor: AppColors.primary,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: const TextStyle(
+                color: AppColors.textHint,
+                fontSize: 14,
+                fontFamily: 'NotoSansArabic',
+              ),
+              counterText: '',
+              filled: true,
+              fillColor: enabled ? Colors.white : const Color(0xFFF3F4F6),
+              prefixIcon: prefix,
+              prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+              suffixIcon: suffix,
+              suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              // Make borders VERY visible
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Color(0xFF9CA3AF), width: 1.5),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Color(0xFF9CA3AF), width: 1.5),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: AppColors.primary, width: 2.0),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: AppColors.error, width: 1.5),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: AppColors.error, width: 2.0),
+              ),
             ),
           ),
         ),
