@@ -98,9 +98,7 @@ class AppTextField extends StatelessWidget {
               filled: true,
               fillColor: enabled ? Colors.white : const Color(0xFFF3F4F6),
               prefixIcon: prefix,
-              prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
               suffixIcon: suffix,
-              suffixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               // Make borders VERY visible
               border: OutlineInputBorder(
