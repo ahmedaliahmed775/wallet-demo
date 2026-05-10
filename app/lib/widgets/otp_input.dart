@@ -28,7 +28,6 @@ class _OtpInputState extends State<OtpInput> {
     super.initState();
     _focusNodes = List.generate(widget.length, (_) => FocusNode());
     _controllers = List.generate(widget.length, (_) => TextEditingController());
-    // Add focus listeners so the UI updates on focus change
     for (final node in _focusNodes) {
       node.addListener(() => setState(() {}));
     }
@@ -81,6 +80,14 @@ class _OtpInputState extends State<OtpInput> {
             width: 56,
             height: 56,
             margin: const EdgeInsets.symmetric(horizontal: 6),
+            decoration: BoxDecoration(
+              color: hasFocus ? AppColors.surface : AppColors.background,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: hasFocus ? AppColors.primary : AppColors.divider,
+                width: hasFocus ? 2 : 1.5,
+              ),
+            ),
             child: TextFormField(
               controller: _controllers[index],
               focusNode: _focusNodes[index],
@@ -95,32 +102,14 @@ class _OtpInputState extends State<OtpInput> {
                 color: AppColors.textPrimary,
               ),
               cursorColor: AppColors.primary,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 counterText: '',
-                filled: true,
-                fillColor: hasFocus
-                    ? AppColors.surface
-                    : AppColors.background,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(
-                    color: hasFocus
-                        ? AppColors.primary
-                        : AppColors.divider,
-                    width: hasFocus ? 2 : 1.5,
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(
-                    color: AppColors.primary,
-                    width: 2,
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColors.divider, width: 1.5),
-                ),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                errorBorder: InputBorder.none,
+                focusedErrorBorder: InputBorder.none,
+                contentPadding: EdgeInsets.zero,
               ),
               onChanged: (value) => _onChanged(value, index),
               onFieldSubmitted: (value) => _onFieldSubmitted(value, index),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/theme/app_colors.dart';
-import '../core/theme/app_text_styles.dart';
 
-class AppTextField extends StatelessWidget {
+class AppTextField extends StatefulWidget {
   final String? label;
   final String? hint;
   final TextEditingController? controller;
@@ -41,19 +40,71 @@ class AppTextField extends StatelessWidget {
   });
 
   @override
+  State<AppTextField> createState() => _AppTextFieldState();
+}
+
+class _AppTextFieldState extends State<AppTextField> {
+  late FocusNode _internalFocusNode;
+  bool _hasFocus = false;
+  String? _errorText;
+
+  FocusNode get _effectiveFocusNode => widget.focusNode ?? _internalFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _internalFocusNode = FocusNode();
+    _effectiveFocusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void didUpdateWidget(AppTextField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.focusNode != widget.focusNode) {
+      oldWidget.focusNode?.removeListener(_onFocusChange);
+      _effectiveFocusNode.addListener(_onFocusChange);
+    }
+  }
+
+  @override
+  void dispose() {
+    _effectiveFocusNode.removeListener(_onFocusChange);
+    _internalFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _onFocusChange() {
+    if (mounted) {
+      setState(() {
+        _hasFocus = _effectiveFocusNode.hasFocus;
+      });
+    }
+  }
+
+  Color _getBorderColor() {
+    if (_errorText != null) return AppColors.error;
+    if (_hasFocus) return AppColors.primary;
+    return const Color(0xFF9CA3AF);
+  }
+
+  double _getBorderWidth() {
+    if (_errorText != null || _hasFocus) return 2.0;
+    return 1.5;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Determine if this is a number-type field
-    final bool isNumeric = isNumberField ||
-        keyboardType == TextInputType.number ||
-        keyboardType == TextInputType.phone ||
-        keyboardType == TextInputType.numberWithOptions();
+    final bool isNumeric = widget.isNumberField ||
+        widget.keyboardType == TextInputType.number ||
+        widget.keyboardType == TextInputType.phone;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        if (label != null) ...[
+        if (widget.label != null) ...[
           Text(
-            label!,
+            widget.label!,
             style: const TextStyle(
               color: AppColors.textPrimary,
               fontSize: 14,
@@ -63,23 +114,46 @@ class AppTextField extends StatelessWidget {
           ),
           const SizedBox(height: 6),
         ],
-        // Wrap number fields in LTR directionality to fix RTL issues
-        Directionality(
-          textDirection: isNumeric ? TextDirection.ltr : TextDirection.rtl,
+        Container(
+          decoration: BoxDecoration(
+            color: widget.enabled ? Colors.white : const Color(0xFFF3F4F6),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: _getBorderColor(),
+              width: _getBorderWidth(),
+            ),
+            boxShadow: _hasFocus
+                ? [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : null,
+          ),
           child: TextFormField(
-            controller: controller,
-            validator: validator,
-            keyboardType: keyboardType,
-            obscureText: obscureText,
-            maxLines: maxLines,
-            maxLength: maxLength,
-            enabled: enabled,
-            onChanged: onChanged,
-            onFieldSubmitted: onSubmitted,
-            textInputAction: textInputAction,
-            focusNode: focusNode,
-            style: const TextStyle(
-              color: AppColors.textPrimary,
+            controller: widget.controller,
+            validator: (value) {
+              final error = widget.validator?.call(value);
+              if (mounted) {
+                setState(() {
+                  _errorText = error;
+                });
+              }
+              return error;
+            },
+            keyboardType: widget.keyboardType,
+            obscureText: widget.obscureText,
+            maxLines: widget.maxLines,
+            maxLength: widget.maxLength,
+            enabled: widget.enabled,
+            onChanged: widget.onChanged,
+            onFieldSubmitted: widget.onSubmitted,
+            textInputAction: widget.textInputAction,
+            focusNode: _effectiveFocusNode,
+            style: TextStyle(
+              color: widget.enabled ? AppColors.textPrimary : AppColors.textSecondary,
               fontSize: 16,
               fontWeight: FontWeight.w400,
               fontFamily: 'NotoSansArabic',
@@ -87,43 +161,50 @@ class AppTextField extends StatelessWidget {
             textAlign: isNumeric ? TextAlign.left : TextAlign.right,
             textAlignVertical: TextAlignVertical.center,
             cursorColor: AppColors.primary,
+            textDirection: isNumeric ? TextDirection.ltr : null,
             decoration: InputDecoration(
-              hintText: hint,
+              hintText: widget.hint,
               hintStyle: const TextStyle(
                 color: AppColors.textHint,
                 fontSize: 14,
                 fontFamily: 'NotoSansArabic',
               ),
               counterText: '',
-              filled: true,
-              fillColor: enabled ? Colors.white : const Color(0xFFF3F4F6),
-              prefixIcon: prefix,
-              suffixIcon: suffix,
+              prefixIcon: widget.prefix != null
+                  ? Padding(
+                      padding: const EdgeInsetsDirectional.only(start: 12, end: 8),
+                      child: widget.prefix,
+                    )
+                  : null,
+              suffixIcon: widget.suffix,
+              // NO borders from InputDecoration - Container handles all borders
+              border: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              focusedErrorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              // Make borders VERY visible
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Color(0xFF9CA3AF), width: 1.5),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Color(0xFF9CA3AF), width: 1.5),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: AppColors.primary, width: 2.0),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: AppColors.error, width: 1.5),
-              ),
-              focusedErrorBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: AppColors.error, width: 2.0),
-              ),
+              // Hide the default error text since we show it manually below
+              errorStyle: const TextStyle(height: 0, fontSize: 0),
             ),
           ),
         ),
+        if (_errorText != null) ...[
+          const SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: Text(
+              _errorText!,
+              style: const TextStyle(
+                color: AppColors.error,
+                fontSize: 12,
+                fontFamily: 'NotoSansArabic',
+              ),
+              textAlign: TextAlign.right,
+            ),
+          ),
+        ],
       ],
     );
   }
