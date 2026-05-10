@@ -136,9 +136,14 @@ class _AppTextFieldState extends State<AppTextField> {
             controller: widget.controller,
             validator: (value) {
               final error = widget.validator?.call(value);
-              if (mounted) {
-                setState(() {
-                  _errorText = error;
+              // تأجيل تحديث الحالة لتجنب التعارض مع دورة البناء (Build Cycle)
+              if (_errorText != error) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) {
+                    setState(() {
+                      _errorText = error;
+                    });
+                  }
                 });
               }
               return error;
@@ -172,12 +177,12 @@ class _AppTextFieldState extends State<AppTextField> {
               counterText: '',
               prefixIcon: widget.prefix != null
                   ? Padding(
-                      padding: const EdgeInsetsDirectional.only(start: 12, end: 8),
+                      // استخدام EdgeInsets بدلاً من EdgeInsetsDirectional لتفادي تعارض LTR/RTL
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: widget.prefix,
                     )
                   : null,
               suffixIcon: widget.suffix,
-              // NO borders from InputDecoration - Container handles all borders
               border: InputBorder.none,
               enabledBorder: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -185,8 +190,8 @@ class _AppTextFieldState extends State<AppTextField> {
               focusedErrorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              // Hide the default error text since we show it manually below
-              errorStyle: const TextStyle(height: 0, fontSize: 0),
+              // استخدام لون شفاف وحجم خط دقيق جداً لمنع انهيار التخطيط
+              errorStyle: const TextStyle(fontSize: 0.01, color: Colors.transparent),
             ),
           ),
         ),
