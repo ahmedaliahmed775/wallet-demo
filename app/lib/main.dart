@@ -14,6 +14,26 @@ import 'features/splash/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ar', null);
+
+  // --- كود اعتراض الأخطاء لإظهارها في وضع Release ---
+  ErrorWidget.builder = (FlutterErrorDetails details) {
+    return Material(
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        color: Colors.red,
+        alignment: Alignment.center,
+        child: SingleChildScrollView(
+          child: Text(
+            details.exceptionAsString(),
+            style: const TextStyle(color: Colors.white, fontSize: 16),
+            textDirection: TextDirection.ltr, // استخدام LTR لتسهيل قراءة الأخطاء الإنجليزية
+          ),
+        ),
+      ),
+    );
+  };
+  // --------------------------------------------------
+
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
