@@ -59,7 +59,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             ),
                           );
                     },
-                    selectedColor: AppColors.primary.withValues(alpha: 0.2),
+                    selectedColor: AppColors.primary.withOpacity(0.2),
                   ),
                 );
               }).toList(),

@@ -53,7 +53,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.secondary.withValues(alpha: 0.1),
+                color: AppColors.secondary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Text('💡 كود المحاكي: 1234', style: TextStyle(color: AppColors.secondary, fontFamily: 'NotoSansArabic')),
@@ -113,7 +113,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.warning.withValues(alpha: 0.1),
+                  color: AppColors.warning.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Row(

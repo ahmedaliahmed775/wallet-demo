@@ -87,12 +87,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           decoration: BoxDecoration(
                             color: notification.isRead
                                 ? AppColors.surface
-                                : AppColors.primary.withValues(alpha: 0.05),
+                                : AppColors.primary.withOpacity(0.05),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: notification.isRead
                                   ? AppColors.divider
-                                  : AppColors.primary.withValues(alpha: 0.2),
+                                  : AppColors.primary.withOpacity(0.2),
                             ),
                           ),
                           child: Row(
@@ -102,7 +102,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 width: 40,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: _getTypeColor(notification.type).withValues(alpha: 0.1),
+                                  color: _getTypeColor(notification.type).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Icon(

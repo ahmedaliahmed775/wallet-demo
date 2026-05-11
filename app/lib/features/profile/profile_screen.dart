@@ -48,7 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.05),
+                            color: Colors.black.withOpacity(0.05),
                             blurRadius: 10,
                             offset: const Offset(0, 2),
                           ),
@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 72,
                             height: 72,
                             decoration: BoxDecoration(
-                              color: AppColors.primary.withValues(alpha: 0.1),
+                              color: AppColors.primary.withOpacity(0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
@@ -83,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                             decoration: BoxDecoration(
-                              color: user.isVerified ? AppColors.success.withValues(alpha: 0.1) : AppColors.warning.withValues(alpha: 0.1),
+                              color: user.isVerified ? AppColors.success.withOpacity(0.1) : AppColors.warning.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Row(
@@ -141,7 +141,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             width: 36,
                                             height: 36,
                                             decoration: BoxDecoration(
-                                              color: AppColors.primary.withValues(alpha: 0.1),
+                                              color: AppColors.primary.withOpacity(0.1),
                                               borderRadius: BorderRadius.circular(8),
                                             ),
                                             child: Center(

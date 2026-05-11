@@ -64,7 +64,7 @@ class _TransferScreenState extends State<TransferScreen> {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: AppColors.secondary.withValues(alpha: 0.1),
+                color: AppColors.secondary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Text('💡 كود المحاكي: 1234', style: TextStyle(color: AppColors.secondary, fontFamily: 'NotoSansArabic')),

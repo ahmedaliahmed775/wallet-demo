@@ -292,7 +292,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: _gender == 'MALE'
-                          ? AppColors.primary.withValues(alpha: 0.1)
+                          ? AppColors.primary.withOpacity(0.1)
                           : AppColors.background,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
@@ -315,7 +315,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       color: _gender == 'FEMALE'
-                          ? AppColors.primary.withValues(alpha: 0.1)
+                          ? AppColors.primary.withOpacity(0.1)
                           : AppColors.background,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(

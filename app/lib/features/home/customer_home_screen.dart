@@ -150,7 +150,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: AppColors.warning.withValues(alpha: 0.1),
+                            color: AppColors.warning.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(color: AppColors.warning),
                           ),
