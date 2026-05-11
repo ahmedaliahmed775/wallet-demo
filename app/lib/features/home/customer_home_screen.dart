@@ -352,7 +352,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (formKey.currentState!.validate()) {
+              if (formKey.currentState?.validate() ?? false) {
                 Navigator.of(ctx).pop();
                 context.read<AuthBloc>().add(AuthKycRequested(
                       nationalId: nationalIdCtrl.text,

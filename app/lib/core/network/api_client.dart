@@ -27,6 +27,18 @@ class ApiClient {
         }
         handler.next(options);
       },
+      onResponse: (response, handler) {
+        // فك غلاف استجابة السيرفر: { "success": true, "data": {...} } → {...}
+        // حتى يستلم الكلاينت البيانات مباشرة بدون طبقة data
+        final body = response.data;
+        if (body is Map<String, dynamic> && body.containsKey('data')) {
+          final inner = body['data'];
+          if (inner is Map<String, dynamic> || inner is List) {
+            response.data = inner;
+          }
+        }
+        handler.next(response);
+      },
       onError: (error, handler) async {
         if (error.response?.statusCode == 401) {
           await SecureStorage.clearAll();
@@ -43,44 +55,19 @@ class ApiClient {
 
   Dio get dio => _dio;
 
-  /// Extracts the inner `data` payload from the server's standard response
-  /// format: `{ "success": true, "data": { ... } }`.
-  /// If `data` key exists and is a Map, returns it; otherwise returns the
-  /// original body so the app works whether the server wraps or not.
-  dynamic _unwrapResponse(dynamic body) {
-    if (body is Map<String, dynamic> && body.containsKey('data')) {
-      final inner = body['data'];
-      if (inner is Map<String, dynamic>) return inner;
-      if (inner is List) return inner;
-    }
-    return body;
-  }
-
   Future<Response> get(String path, {Map<String, dynamic>? queryParameters}) {
-    return _dio.get(path, queryParameters: queryParameters).then((response) {
-      response.data = _unwrapResponse(response.data);
-      return response;
-    });
+    return _dio.get(path, queryParameters: queryParameters);
   }
 
   Future<Response> post(String path, {dynamic data}) {
-    return _dio.post(path, data: data).then((response) {
-      response.data = _unwrapResponse(response.data);
-      return response;
-    });
+    return _dio.post(path, data: data);
   }
 
   Future<Response> put(String path, {dynamic data}) {
-    return _dio.put(path, data: data).then((response) {
-      response.data = _unwrapResponse(response.data);
-      return response;
-    });
+    return _dio.put(path, data: data);
   }
 
   Future<Response> delete(String path, {dynamic data}) {
-    return _dio.delete(path, data: data).then((response) {
-      response.data = _unwrapResponse(response.data);
-      return response;
-    });
+    return _dio.delete(path, data: data);
   }
 }

@@ -272,7 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           TextButton(onPressed: () => Navigator.of(ctx).pop(), child: const Text('إلغاء')),
           ElevatedButton(
             onPressed: () async {
-              if (formKey.currentState!.validate()) {
+              if (formKey.currentState?.validate() ?? false) {
                 Navigator.of(ctx).pop();
                 try {
                   final repo = AuthRepository();
