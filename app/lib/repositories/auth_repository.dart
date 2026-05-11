@@ -74,11 +74,12 @@ class AuthRepository {
   Future<Map<String, dynamic>> requestOtp({
     required String phone,
     required String shortCode,
+    String purpose = 'LOGIN',
   }) async {
     try {
       final response = await _apiClient.post(
         ApiEndpoints.requestOtp,
-        data: {'phone': phone, 'shortCode': shortCode},
+        data: {'phone': phone, 'purpose': purpose},
       );
       return response.data as Map<String, dynamic>;
     } on DioException catch (e) {

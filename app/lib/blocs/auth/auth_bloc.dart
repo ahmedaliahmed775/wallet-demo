@@ -78,9 +78,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         phone: event.phone,
         password: event.password,
       );
-      final user = UserModel.fromJson(result['user'] as Map<String, dynamic>);
-      final token = result['token'] as String;
-      emit(AuthAuthenticated(user: user, token: token));
+      final userData = result['user'];
+      final token = result['token'];
+
+      if (userData == null || token == null) {
+        emit(AuthError(message: 'استجابة الخادم غير صالحة'));
+        return;
+      }
+
+      final user = UserModel.fromJson(userData as Map<String, dynamic>);
+      emit(AuthAuthenticated(user: user, token: token as String));
     } catch (e) {
       emit(AuthError(message: e.toString().replaceAll('Exception: ', '')));
     }
@@ -96,14 +103,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         phone: event.phone,
         password: event.password,
       );
-      final user = UserModel.fromJson(result['user'] as Map<String, dynamic>);
-      final token = result['token'] as String;
+      final userData = result['user'];
+      final token = result['token'];
+
+      if (userData == null || token == null) {
+        emit(AuthError(message: 'استجابة الخادم غير صالحة'));
+        return;
+      }
+
+      final user = UserModel.fromJson(userData as Map<String, dynamic>);
 
       if (user.role == 'POS' || user.role == 'MERCHANT') {
         await SecureStorage.saveConfirmationCode(event.shortCode);
       }
 
-      emit(AuthAuthenticated(user: user, token: token));
+      emit(AuthAuthenticated(user: user, token: token as String));
     } catch (e) {
       emit(AuthError(message: e.toString().replaceAll('Exception: ', '')));
     }
@@ -139,8 +153,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       if (result['user'] != null && result['token'] != null) {
-        final user = UserModel.fromJson(result['user'] as Map<String, dynamic>);
-        final token = result['token'] as String;
+        final user = UserModel.fromJson(result['user']! as Map<String, dynamic>);
+        final token = result['token']! as String;
 
         await SecureStorage.saveToken(token);
         await SecureStorage.saveUserId(user.id);

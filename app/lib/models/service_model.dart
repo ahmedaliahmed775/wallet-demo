@@ -19,11 +19,11 @@ class ServiceModel {
 
   factory ServiceModel.fromJson(Map<String, dynamic> json) {
     return ServiceModel(
-      id: json['id'] as String,
-      nameAr: json['nameAr'] as String,
-      nameEn: json['nameEn'] as String,
+      id: (json['id'] as String?) ?? '',
+      nameAr: (json['nameAr'] as String?) ?? '',
+      nameEn: (json['nameEn'] as String?) ?? '',
       icon: json['icon'] as String? ?? '',
-      category: json['category'] as String,
+      category: (json['category'] as String?) ?? '',
       isActive: json['isActive'] as bool? ?? true,
       sortOrder: json['sortOrder'] as int? ?? 0,
     );

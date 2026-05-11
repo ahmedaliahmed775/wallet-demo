@@ -47,17 +47,17 @@ class TransactionModel extends Equatable {
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     return TransactionModel(
-      id: json['id'] as String,
-      type: json['type'] as String,
-      status: json['status'] as String,
+      id: (json['id'] as String?) ?? '',
+      type: (json['type'] as String?) ?? 'PAYMENT',
+      status: (json['status'] as String?) ?? 'PENDING',
       senderWalletId: json['senderWalletId'] as String?,
       receiverWalletId: json['receiverWalletId'] as String?,
-      amount: (json['amount'] as num).toDouble(),
-      fee: (json['fee'] as num).toDouble(),
+      amount: (json['amount'] as num?)?.toDouble() ?? 0.0,
+      fee: (json['fee'] as num?)?.toDouble() ?? 0.0,
       netAmount: json['netAmount'] != null
           ? (json['netAmount'] as num).toDouble()
           : 0.0,
-      currency: json['currency'] as String,
+      currency: (json['currency'] as String?) ?? 'YER',
       referenceNo: json['referenceNo'] as String?,
       transactionRef: json['transactionRef'] as String?,
       description: json['description'] as String?,

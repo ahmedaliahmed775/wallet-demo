@@ -16,7 +16,7 @@ class RechargeOperatorModel {
 
   factory RechargeOperatorModel.fromJson(Map<String, dynamic> json) {
     return RechargeOperatorModel(
-      id: json['id'] as String,
+      id: (json['id'] as String?) ?? '',
       nameAr: json['nameAr'] as String? ?? json['name'] as String? ?? '',
       nameEn: json['nameEn'] as String? ?? json['name'] as String? ?? '',
       logo: json['logo'] as String?,

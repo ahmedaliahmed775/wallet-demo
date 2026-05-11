@@ -19,10 +19,10 @@ class MerchantModel {
 
   factory MerchantModel.fromJson(Map<String, dynamic> json) {
     return MerchantModel(
-      id: json['id'] as String,
+      id: (json['id'] as String?) ?? '',
       userId: json['userId'] as String? ?? '',
-      businessName: json['businessName'] as String,
-      shortCode: json['shortCode'] as String,
+      businessName: (json['businessName'] as String?) ?? '',
+      shortCode: (json['shortCode'] as String?) ?? '',
       terminalNumber: json['terminalNumber'] as String? ?? '',
       category: json['category'] as String?,
       isActive: json['isActive'] as bool? ?? true,

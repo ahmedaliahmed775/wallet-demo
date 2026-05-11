@@ -20,7 +20,7 @@ class BillServiceModel {
 
   factory BillServiceModel.fromJson(Map<String, dynamic> json) {
     return BillServiceModel(
-      id: json['id'] as String,
+      id: (json['id'] as String?) ?? '',
       nameAr: json['nameAr'] as String? ?? json['name'] as String? ?? '',
       nameEn: json['nameEn'] as String? ?? json['name'] as String? ?? '',
       serviceCode: json['serviceCode'] as String? ?? json['code'] as String? ?? '',

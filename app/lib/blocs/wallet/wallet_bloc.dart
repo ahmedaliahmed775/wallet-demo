@@ -115,12 +115,12 @@ class WalletBloc extends Bloc<WalletEvent, WalletState> {
     Map<String, dynamic> result,
     List<WalletModel> wallets,
   ) {
-    if (result['totalBalanceYER'] != null) {
+    if (result['totalBalanceYER'] != null && result['totalBalanceYER'] is num) {
       return (result['totalBalanceYER'] as num).toDouble();
     }
     if (result['data'] is Map<String, dynamic>) {
       final data = result['data'] as Map<String, dynamic>;
-      if (data['totalBalanceYER'] != null) {
+      if (data['totalBalanceYER'] != null && data['totalBalanceYER'] is num) {
         return (data['totalBalanceYER'] as num).toDouble();
       }
     }

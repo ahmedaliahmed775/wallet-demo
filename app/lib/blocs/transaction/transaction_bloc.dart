@@ -152,9 +152,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       final pagination = _parsePagination(result);
       emit(TransactionLoaded(
         transactions: transactions,
-        page: pagination['page'] as int,
-        totalPages: pagination['totalPages'] as int,
-        total: pagination['total'] as int,
+        page: (pagination['page'] as int?) ?? 1,
+        totalPages: (pagination['totalPages'] as int?) ?? 1,
+        total: (pagination['total'] as int?) ?? 0,
       ));
     } catch (e) {
       emit(TransactionError(
@@ -176,9 +176,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       final pagination = _parsePagination(result);
       emit(TransactionLoaded(
         transactions: transactions,
-        page: pagination['page'] as int,
-        totalPages: pagination['totalPages'] as int,
-        total: pagination['total'] as int,
+        page: (pagination['page'] as int?) ?? 1,
+        totalPages: (pagination['totalPages'] as int?) ?? 1,
+        total: (pagination['total'] as int?) ?? 0,
       ));
     } catch (e) {
       emit(TransactionError(
@@ -201,9 +201,9 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
       final pagination = _parsePagination(result);
       emit(TransactionLoaded(
         transactions: transactions,
-        page: pagination['page'] as int,
-        totalPages: pagination['totalPages'] as int,
-        total: pagination['total'] as int,
+        page: (pagination['page'] as int?) ?? 1,
+        totalPages: (pagination['totalPages'] as int?) ?? 1,
+        total: (pagination['total'] as int?) ?? 0,
       ));
     } catch (e) {
       emit(TransactionError(

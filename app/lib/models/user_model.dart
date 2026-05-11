@@ -55,12 +55,12 @@ class UserModel extends Equatable {
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      id: json['id'] as String,
-      phone: json['phone'] as String,
-      name: json['name'] as String,
+      id: (json['id'] as String?) ?? '',
+      phone: (json['phone'] as String?) ?? '',
+      name: (json['name'] as String?) ?? '',
       email: json['email'] as String?,
-      role: json['role'] as String,
-      status: json['status'] as String,
+      role: (json['role'] as String?) ?? 'CUSTOMER',
+      status: (json['status'] as String?) ?? 'ACTIVE',
       gender: json['gender'] as String?,
       firstName: json['firstName'] as String?,
       fatherName: json['fatherName'] as String?,

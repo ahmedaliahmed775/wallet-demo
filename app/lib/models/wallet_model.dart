@@ -22,11 +22,11 @@ class WalletModel extends Equatable {
 
   factory WalletModel.fromJson(Map<String, dynamic> json) {
     return WalletModel(
-      id: json['id'] as String,
+      id: (json['id'] as String?) ?? '',
       userId: json['userId'] as String? ?? '',
-      currency: json['currency'] as String,
-      balance: (json['balance'] as num).toDouble(),
-      walletNumber: json['walletNumber'] as String,
+      currency: (json['currency'] as String?) ?? 'YER',
+      balance: (json['balance'] as num?)?.toDouble() ?? 0.0,
+      walletNumber: (json['walletNumber'] as String?) ?? '',
       isDefault: json['isDefault'] as bool? ?? false,
     );
   }
