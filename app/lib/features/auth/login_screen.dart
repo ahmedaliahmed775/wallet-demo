@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState?.validate() ?? false) {
       final phone = '967${_phoneController.text}';
       context.read<AuthBloc>().add(AuthLoginRequested(
             phone: phone,

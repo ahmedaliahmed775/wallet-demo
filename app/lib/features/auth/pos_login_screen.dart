@@ -32,7 +32,7 @@ class _PosLoginScreenState extends State<PosLoginScreen> {
   }
 
   void _requestOtp() {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState?.validate() ?? false) {
       final phone = '967${_phoneController.text}';
       context.read<AuthBloc>().add(PosLoginRequested(
             phone: phone,

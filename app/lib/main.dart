@@ -72,7 +72,7 @@ class MahfazApp extends StatelessWidget {
         builder: (context, child) {
           return Directionality(
             textDirection: TextDirection.rtl,
-            child: child!,
+            child: child ?? const SizedBox.shrink(),
           );
         },
         home: const SplashScreen(),
