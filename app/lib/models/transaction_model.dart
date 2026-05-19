@@ -23,7 +23,7 @@ class TransactionModel extends Equatable {
   final String? senderPhone;
   final String? receiverPhone;
 
-  TransactionModel({
+  const TransactionModel({
     required this.id,
     required this.type,
     required this.status,

@@ -23,7 +23,7 @@ class UserModel extends Equatable {
   final List<WalletModel>? wallets;
   final MerchantModel? merchant;
 
-  UserModel({
+  const UserModel({
     required this.id,
     required this.phone,
     required this.name,

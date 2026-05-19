@@ -5,6 +5,7 @@ export const config = {
   otpExpiry: '5m',
   otpCode: '1234', // Fixed for simulation
   encryptionKey: process.env.ENCRYPTION_KEY || 'mahfaz-aes-key-2024-32chars!',
+  internalAPIKey: process.env.MAHFAZ_INTERNAL_API_KEY || 'mahfaz-internal-key-2024',
   currencyRates: {
     USD_TO_YER: 530,
     SAR_TO_YER: 141,

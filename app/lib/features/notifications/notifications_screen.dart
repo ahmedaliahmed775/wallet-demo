@@ -64,7 +64,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.notifications_off, size: 64, color: AppColors.textHint),
+                      const Icon(Icons.notifications_off, size: 64, color: AppColors.textHint),
                       const SizedBox(height: 16),
                       Text(
                         'لا توجد إشعارات',

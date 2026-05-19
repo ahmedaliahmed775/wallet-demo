@@ -216,7 +216,7 @@ class _MerchantHomeScreenState extends State<MerchantHomeScreen> {
                               padding: const EdgeInsets.all(32),
                               child: Column(
                                 children: [
-                                  Icon(Icons.receipt_long, size: 48, color: AppColors.textHint),
+                                  const Icon(Icons.receipt_long, size: 48, color: AppColors.textHint),
                                   const SizedBox(height: 8),
                                   Text(
                                     'لا توجد عمليات بعد',

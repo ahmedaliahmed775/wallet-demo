@@ -82,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final token = result['token'];
 
       if (userData == null || token == null) {
-        emit(AuthError(message: 'استجابة الخادم غير صالحة'));
+        emit(const AuthError(message: 'استجابة الخادم غير صالحة'));
         return;
       }
 
@@ -107,7 +107,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final token = result['token'];
 
       if (userData == null || token == null) {
-        emit(AuthError(message: 'استجابة الخادم غير صالحة'));
+        emit(const AuthError(message: 'استجابة الخادم غير صالحة'));
         return;
       }
 
@@ -226,7 +226,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         await SecureStorage.saveIsVerified(true);
         emit(AuthKycSubmitted(user: updatedUser, token: currentState.token));
       } else {
-        emit(AuthError(message: 'غير مسجل الدخول'));
+        emit(const AuthError(message: 'غير مسجل الدخول'));
       }
     } catch (e) {
       emit(AuthError(message: e.toString().replaceAll('Exception: ', '')));

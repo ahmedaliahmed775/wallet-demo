@@ -77,7 +77,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                        const Icon(Icons.error_outline, size: 48, color: AppColors.error),
                         const SizedBox(height: 8),
                         Text(state.message, style: AppTextStyles.bodyMedium),
                       ],
@@ -90,7 +90,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.receipt_long, size: 48, color: AppColors.textHint),
+                          const Icon(Icons.receipt_long, size: 48, color: AppColors.textHint),
                           const SizedBox(height: 8),
                           Text(
                             'لا توجد عمليات بعد',

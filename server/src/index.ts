@@ -13,6 +13,7 @@ import walletRoutes from './routes/wallet.routes.js';
 import transactionRoutes from './routes/transaction.routes.js';
 import seedRoutes from './routes/seed.routes.js';
 import notificationRoutes from './routes/notification.routes.js';
+import internalRoutes from './routes/internal.routes.js';
 
 const app = express();
 
@@ -51,6 +52,7 @@ app.use('/api/wallet', walletRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/seed', seedRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/internal', internalRoutes);
 
 // 404 handler
 app.use((_req, res) => {

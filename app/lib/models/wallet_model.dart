@@ -8,7 +8,7 @@ class WalletModel extends Equatable {
   final String walletNumber;
   final bool isDefault;
 
-  WalletModel({
+  const WalletModel({
     required this.id,
     required this.userId,
     required this.currency,
