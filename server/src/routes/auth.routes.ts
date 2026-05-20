@@ -189,16 +189,16 @@ router.post('/login', async (req: Request, res: Response) => {
 
     // إذا أرسل العميل role، تحقق من تطابقه مع الدور المخزن
     let user;
-    if (body.terminalNumber) {
-      // ابحث عن التاجر برقم نقطة البيع
+    if (body.terminalNumber && body.role === 'MERCHANT') {
+      // ابحث عن التاجر برقم نقطة البيع (للتجار فقط)
       const merchant = await db.merchant.findFirst({
         where: { terminalNumber: body.terminalNumber, isActive: true },
         include: { user: { include: { wallets: true, merchant: true } } }
       });
       user = merchant?.user;
-    } else {
+    } else if (body.phone) {
       user = await db.user.findUnique({
-        where: { phone: body.phone! },
+        where: { phone: body.phone },
         include: { wallets: true, merchant: true }
       });
     }
