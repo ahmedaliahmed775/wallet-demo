@@ -191,8 +191,8 @@ router.post('/login', async (req: Request, res: Response) => {
     let user;
     if (body.terminalNumber) {
       // ابحث عن التاجر برقم نقطة البيع
-      const merchant = await db.merchant.findUnique({
-        where: { terminalNumber: body.terminalNumber },
+      const merchant = await db.merchant.findFirst({
+        where: { terminalNumber: body.terminalNumber, isActive: true },
         include: { user: { include: { wallets: true, merchant: true } } }
       });
       user = merchant?.user;
