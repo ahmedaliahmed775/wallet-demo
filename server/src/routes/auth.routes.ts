@@ -18,8 +18,12 @@ const registerSchema = z.object({
 });
 
 const loginSchema = z.object({
-  phone: z.string().min(9),
+  phone: z.string().min(9).optional(),
+  terminalNumber: z.string().length(6).optional(),
   password: z.string().min(4),
+  role: z.enum(['CUSTOMER', 'MERCHANT']).optional(),
+}).refine(data => data.phone || data.terminalNumber, {
+  message: "يجب إدخال رقم الهاتف أو رقم نقطة البيع"
 });
 
 const requestOtpSchema = z.object({
@@ -60,7 +64,7 @@ function generateShortCode(): string {
 }
 
 function generateTerminalNumber(): string {
-  return 'T-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 100).toString().padStart(2, '0');
+  return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit
 }
 
 // POST /api/auth/register
@@ -180,10 +184,30 @@ router.post('/login', async (req: Request, res: Response) => {
   try {
     const body = loginSchema.parse(req.body);
 
-    const user = await db.user.findUnique({
-      where: { phone: body.phone },
-      include: { wallets: true, merchant: true },
-    });
+    // إذا أرسل العميل role، تحقق من تطابقه مع الدور المخزن
+    let user;
+    if (body.terminalNumber) {
+      // ابحث عن التاجر برقم نقطة البيع
+      const merchant = await db.merchant.findUnique({
+        where: { terminalNumber: body.terminalNumber },
+        include: { user: { include: { wallets: true, merchant: true } } }
+      });
+      user = merchant?.user;
+    } else {
+      user = await db.user.findUnique({
+        where: { phone: body.phone! },
+        include: { wallets: true, merchant: true }
+      });
+    }
+
+    if (body.role && user && user.role !== body.role) {
+      sendError(res, 403, '403 FORBIDDEN',
+        body.role === 'MERCHANT'
+          ? 'هذا الحساب ليس حساب تاجر. يرجى اختيار زبون.'
+          : 'هذا الحساب ليس حساب زبون. يرجى اختيار تاجر.',
+        ErrorCodes.SYS_PERMISSION);
+      return;
+    }
 
     if (!user) {
       sendError(res, 401, '401 UNAUTHORIZED', 'Invalid phone or password', ErrorCodes.INVALID_CREDENTIALS);
