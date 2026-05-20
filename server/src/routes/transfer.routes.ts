@@ -13,7 +13,7 @@ function generateReferenceNo(): string {
 }
 
 const transferSchema = z.object({
-  receiverPhone: z.string().min(10),
+  receiverPhone: z.string().min(9),
   amount: z.number().positive(),
   currency: z.enum(['YER', 'USD', 'SAR']),
   note: z.string().optional(),

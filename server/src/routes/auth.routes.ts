@@ -11,24 +11,24 @@ const router = Router();
 
 const registerSchema = z.object({
   name: z.string().min(2),
-  phone: z.string().min(10),
+  phone: z.string().min(9),
   password: z.string().min(4),
   gender: z.enum(['MALE', 'FEMALE']).optional(),
   role: z.enum(['CUSTOMER', 'MERCHANT', 'POS', 'AGENT']).default('CUSTOMER'),
 });
 
 const loginSchema = z.object({
-  phone: z.string().min(10),
+  phone: z.string().min(9),
   password: z.string().min(4),
 });
 
 const requestOtpSchema = z.object({
-  phone: z.string().min(10),
+  phone: z.string().min(9),
   purpose: z.enum(['LOGIN', 'PAYMENT', 'TRANSFER', 'CHANGE_PIN', 'VERIFY', 'REGISTER']).default('LOGIN'),
 });
 
 const verifyOtpSchema = z.object({
-  phone: z.string().min(10),
+  phone: z.string().min(9),
   code: z.string().length(4),
   purpose: z.enum(['LOGIN', 'PAYMENT', 'TRANSFER', 'CHANGE_PIN', 'VERIFY', 'REGISTER']).default('LOGIN'),
 });
