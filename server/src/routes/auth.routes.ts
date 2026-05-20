@@ -55,6 +55,14 @@ function generateWalletNumber(): string {
   return 'MF' + Date.now().toString().slice(-8) + Math.floor(Math.random() * 100).toString().padStart(2, '0');
 }
 
+function generateShortCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+function generateTerminalNumber(): string {
+  return 'T-' + Date.now().toString().slice(-6) + Math.floor(Math.random() * 100).toString().padStart(2, '0');
+}
+
 // POST /api/auth/register
 router.post('/register', async (req: Request, res: Response) => {
   try {
@@ -116,6 +124,22 @@ router.post('/register', async (req: Request, res: Response) => {
       },
     });
 
+    // إنشاء سجل التاجر تلقائياً إذا كان الدور MERCHANT
+    let merchant = null;
+    if (body.role === 'MERCHANT') {
+      merchant = await db.merchant.create({
+        data: {
+          userId: user.id,
+          businessName: body.name,
+          shortCode: generateShortCode(),
+          terminalNumber: generateTerminalNumber(),
+          category: 'RETAIL',
+          isActive: true,
+          approvedAt: new Date(),
+        },
+      });
+    }
+
     const token = generateToken({ id: user.id, phone: user.phone, role: user.role });
     const wallets = await db.wallet.findMany({ where: { userId: user.id } });
 
@@ -129,6 +153,12 @@ router.post('/register', async (req: Request, res: Response) => {
           role: user.role,
           status: user.status,
           isVerified: user.isVerified,
+          merchant: merchant ? {
+            id: merchant.id,
+            businessName: merchant.businessName,
+            shortCode: merchant.shortCode,
+            terminalNumber: merchant.terminalNumber,
+          } : null,
         },
         wallets,
         token,
@@ -285,6 +315,7 @@ router.post('/verify-otp', async (req: Request, res: Response) => {
               id: user.merchant.id,
               businessName: user.merchant.businessName,
               shortCode: user.merchant.shortCode,
+              terminalNumber: user.merchant.terminalNumber,
             } : null,
           },
           wallets: user.wallets,
