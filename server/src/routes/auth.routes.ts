@@ -15,6 +15,8 @@ const registerSchema = z.object({
   password: z.string().min(4),
   gender: z.enum(['MALE', 'FEMALE']).optional(),
   role: z.enum(['CUSTOMER', 'MERCHANT', 'POS', 'AGENT']).default('CUSTOMER'),
+  businessName: z.string().min(2).optional(),
+  category: z.enum(['RETAIL', 'RESTAURANT', 'SERVICES', 'GROCERY', 'PHARMACY', 'ELECTRONICS', 'CLOTHING', 'OTHER']).optional(),
 });
 
 const loginSchema = z.object({
@@ -134,10 +136,10 @@ router.post('/register', async (req: Request, res: Response) => {
       merchant = await db.merchant.create({
         data: {
           userId: user.id,
-          businessName: body.name,
+          businessName: body.businessName || body.name,
           shortCode: generateShortCode(),
           terminalNumber: generateTerminalNumber(),
-          category: 'RETAIL',
+          category: body.category || 'RETAIL',
           isActive: true,
           approvedAt: new Date(),
         },
@@ -162,6 +164,7 @@ router.post('/register', async (req: Request, res: Response) => {
             businessName: merchant.businessName,
             shortCode: merchant.shortCode,
             terminalNumber: merchant.terminalNumber,
+            category: merchant.category,
           } : null,
         },
         wallets,
@@ -253,6 +256,7 @@ router.post('/login', async (req: Request, res: Response) => {
             businessName: user.merchant.businessName,
             shortCode: user.merchant.shortCode,
             terminalNumber: user.merchant.terminalNumber,
+            category: user.merchant.category,
           } : null,
         },
         wallets: user.wallets,
@@ -340,6 +344,7 @@ router.post('/verify-otp', async (req: Request, res: Response) => {
               businessName: user.merchant.businessName,
               shortCode: user.merchant.shortCode,
               terminalNumber: user.merchant.terminalNumber,
+              category: user.merchant.category,
             } : null,
           },
           wallets: user.wallets,
