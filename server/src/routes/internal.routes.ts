@@ -254,4 +254,124 @@ router.post('/process-transaction', async (req: Request, res: Response) => {
   }
 });
 
+// ── التحقق من مدخلات حقن الرصيد ──────────────────────────────
+const injectBalanceSchema = z.object({
+  phone: z.string().min(10),
+  amount: z.number().positive(),
+  currency: z.enum(['YER', 'USD', 'SAR']).default('YER'),
+  note: z.string().optional(),
+});
+
+/**
+ * POST /api/internal/inject-balance
+ *
+ * حقن رصيد مباشر إلى محفظة مستخدم (للمسؤولين عبر API Key داخلي)
+ * - يبحث عن المستخدم برقم الهاتف
+ * - يبحث عن محفظته حسب العملة أو المحفظة الافتراضية
+ * - يضيف الرصيد مباشرة + ينشئ سجل معاملة CASH_IN
+ */
+router.post('/inject-balance', async (req: Request, res: Response) => {
+  try {
+    const body = injectBalanceSchema.parse(req.body);
+
+    // البحث عن المستخدم
+    const user = await db.user.findUnique({
+      where: { phone: body.phone },
+      include: { wallets: true },
+    });
+
+    if (!user) {
+      res.json({
+        success: false,
+        error: {
+          status: '404 NOT_FOUND',
+          timestamp: new Date().toISOString(),
+          message: `المستخدم ${body.phone} غير موجود`,
+          code: 1404,
+        },
+      });
+      return;
+    }
+
+    // البحث عن المحفظة المناسبة
+    const wallet = user.wallets.find(w => w.currency === body.currency)
+      || user.wallets.find(w => w.isDefault);
+
+    if (!wallet) {
+      res.json({
+        success: false,
+        error: {
+          status: '404 NOT_FOUND',
+          timestamp: new Date().toISOString(),
+          message: `لا توجد محفظة ${body.currency} للمستخدم ${body.phone}`,
+          code: 1404,
+        },
+      });
+      return;
+    }
+
+    const referenceNo = 'INJ' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
+
+    // حقن الرصيد + إنشاء معاملة
+    await db.transaction.create({
+      data: {
+        type: 'CASH_IN',
+        status: 'COMPLETED',
+        receiverWalletId: wallet.id,
+        amount: body.amount,
+        fee: 0,
+        netAmount: body.amount,
+        currency: body.currency,
+        referenceNo,
+        description: body.note || `Admin balance injection - ${body.amount} ${body.currency}`,
+      },
+    });
+
+    // تحديث الرصيد
+    const updated = await db.wallet.update({
+      where: { id: wallet.id },
+      data: { balance: { increment: body.amount } },
+    });
+
+    console.log(`[Internal] 💉 رصيد +${body.amount} ${body.currency} → ${body.phone} | الرصيد الجديد: ${updated.balance}`);
+
+    res.json({
+      success: true,
+      data: {
+        phone: body.phone,
+        userName: user.name,
+        role: user.role,
+        walletNumber: wallet.walletNumber,
+        currency: body.currency,
+        injectedAmount: body.amount,
+        newBalance: updated.balance,
+        referenceNo,
+      },
+    });
+  } catch (err: unknown) {
+    if (err instanceof z.ZodError) {
+      res.status(400).json({
+        success: false,
+        error: {
+          status: '400 BAD_REQUEST',
+          timestamp: new Date().toISOString(),
+          message: 'جسم الطلب غير صالح: ' + (err as z.ZodError).errors.map((e: z.ZodIssue) => `${e.path.join('.')}: ${e.message}`).join(', '),
+          code: 1400,
+        },
+      });
+      return;
+    }
+    console.error('[Internal] inject-balance error:', err);
+    res.status(500).json({
+      success: false,
+      error: {
+        status: '500 INTERNAL_SERVER_ERROR',
+        timestamp: new Date().toISOString(),
+        message: (err as Error).message,
+        code: 9999,
+      },
+    });
+  }
+});
+
 export default router;
