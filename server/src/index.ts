@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import { config } from './config/index.js';
 import { errorHandler } from './lib/errors.js';
+import { checkDatabase } from './lib/startup.js';
 import authRoutes from './routes/auth.routes.js';
 import transferRoutes from './routes/transfer.routes.js';
 import paymentRoutes from './routes/payment.routes.js';
@@ -72,14 +73,25 @@ app.use(errorHandler);
 
 // Start server
 const PORT = config.port;
-app.listen(PORT, () => {
-  console.log(`
+
+async function start() {
+  const dbOk = await checkDatabase();
+  if (!dbOk) {
+    console.error('Cannot start server - database connection failed');
+    process.exit(1);
+  }
+
+  app.listen(PORT, () => {
+    console.log(`
 ╔══════════════════════════════════════════╗
 ║   مِحْفَظ (Mahfaz) - Yemeni E-Wallet      ║
 ║   Server running on port ${PORT}            ║
 ║   http://localhost:${PORT}                  ║
 ╚══════════════════════════════════════════╝
-  `);
-});
+    `);
+  });
+}
+
+start();
 
 export default app;
