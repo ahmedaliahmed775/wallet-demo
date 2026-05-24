@@ -158,7 +158,7 @@ router.post('/process-transaction', async (req: Request, res: Response) => {
         transactionId: failedTxn.id,
         status: 'FAILED',
         errorCode: 'INSUFFICIENT_BALANCE',
-        message: `رصيد غير كافٍ: ${senderWallet.balance} < ${body.amount}`,
+        message: `الرصيد غير كافٍ لإتمام العملية`,
         payerBalance: senderWallet.balance,
       });
       return;
