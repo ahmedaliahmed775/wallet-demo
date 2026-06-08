@@ -29,7 +29,12 @@ app.use((req, _res, next) => {
   next();
 });
 
-// Health check
+// Health check (Atheer Switch ping)
+app.get('/health', (_req, res) => {
+  res.json({ status: 'UP' });
+});
+
+// Health check (detailed)
 app.get('/api/health', (_req, res) => {
   res.json({
     success: true,
@@ -54,6 +59,8 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/seed', seedRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/internal', internalRoutes);
+// Atheer Switch new contract path (v1)
+app.use('/api/v1/atheer', internalRoutes);
 
 // 404 handler
 app.use((_req, res) => {
